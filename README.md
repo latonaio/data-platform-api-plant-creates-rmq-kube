@@ -18,7 +18,8 @@ APIサービス URL: https://xxx.xxx.io/api/API_PLANT_SRV/creates/
 ## 本レポジトリ に 含まれる API名
 data-platform-api-plant-creates-rmq-kube には、次の API をコールするためのリソースが含まれています。  
 
-* A_Plant（プラント - プラントデータ）
+* A_General（プラント - 基本データ）
+* A_StorageLocation（プラント - 在庫保管場所データ）
 
 ## API への 値入力条件 の 初期値
 data-platform-api-plant-creates-rmq-kube において、API への値入力条件の初期値は、入力ファイルレイアウトの種別毎に、次の通りとなっています。  
@@ -31,12 +32,12 @@ Latona および AION の データ連携基盤 関連リソースでは、Input
 * sample.jsonの記載例(1)  
 
 accepter において 下記の例のように、データの種別（＝APIの種別）を指定します。  
-ここでは、"Plant" が指定されています。    
+ここでは、"General" が指定されています。    
   
 ```
 	"api_schema": "DPFMPlantCreates",
-	"accepter": ["Plant"],
-	"order_id": null,
+	"accepter": ["General"],
+	"plant": null,
 	"deleted": false
 ```
   
@@ -47,7 +48,7 @@ accepter において 下記の例のように、データの種別（＝APIの�
 ```
 	"api_schema": "DPFMPlantCreates",
 	"accepter": ["All"],
-	"order_id": null,
+	"plant": null,
 	"deleted": false
 ```
 
@@ -73,8 +74,10 @@ func (c *DPFMAPICaller) AsyncPlantCreates(
 	for _, fn := range accepter {
 		wg.Add(1)
 		switch fn {
-		case "Plant":
-			go c.Plant(&wg, &mtx, sqlUpdateFin, log, &errs, input)
+		case "General":
+			go c.General(&wg, &mtx, sqlUpdateFin, log, &errs, input)
+		case "StorageLocation":
+			go c.StorageLocation(&wg, &mtx, sqlUpdateFin, log, &errs, input)
 		default:
 			wg.Done()
 		}
@@ -100,8 +103,8 @@ func (c *DPFMAPICaller) AsyncPlantCreates(
 
 ## Output  
 本マイクロサービスでは、[golang-logging-library-for-data-platform](https://github.com/latonaio/golang-logging-library-for-data-platform) により、以下のようなデータがJSON形式で出力されます。  
-以下の sample.json の例は プラント の プラントデータ が取得された結果の JSON の例です。  
-以下の項目のうち、"BusinessPartner"〜"IsMarkedForDeletion" は、/DPFM_API_Output_Formatter/type.go 内 の Type  Plant {} による出力結果です。"cursor" ～ "time"は、golang-logging-library による 定型フォーマットの出力結果です。  
+以下の sample.json の例は プラント の 基本データ が取得された結果の JSON の例です。  
+以下の項目のうち、"BusinessPartner"〜"IsMarkedForDeletion" は、/DPFM_API_Output_Formatter/type.go 内 の Type General {} による出力結果です。"cursor" ～ "time"は、golang-logging-library による 定型フォーマットの出力結果です。  
 
 ```
 {

@@ -1,8 +1,8 @@
 package requests
 
-type Plant struct {
+type General struct {
 	BusinessPartner      *int    `json:"BusinessPartner"`
-	Plant                *string `json:"Plant"`
+	Plant                string  `json:"Plant"`
 	PlantFullName        string  `json:"PlantFullName"`
 	PlantName            *string `json:"PlantName"`
 	Language             *string `json:"Language"`

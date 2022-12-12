@@ -45,8 +45,10 @@ func (c *DPFMAPICaller) AsyncPlantCreates(
 	for _, fn := range accepter {
 		wg.Add(1)
 		switch fn {
-		case "Plant":
-			go c.Plant(&wg, &mtx, sqlUpdateFin, log, &errs, input)
+		case "General":
+			go c.General(&wg, &mtx, sqlUpdateFin, log, &errs, input)
+		case "StorageLocation":
+			go c.StorageLocation(&wg, &mtx, sqlUpdateFin, log, &errs, input)
 		default:
 			wg.Done()
 		}
@@ -69,7 +71,7 @@ func (c *DPFMAPICaller) AsyncPlantCreates(
 	return nil
 }
 
-func (c *DPFMAPICaller) Plant(wg *sync.WaitGroup, mtx *sync.Mutex, errFin chan error, log *logger.Logger, errs *[]error, sdc *dpfm_api_input_reader.SDC) {
+func (c *DPFMAPICaller) General(wg *sync.WaitGroup, mtx *sync.Mutex, errFin chan error, log *logger.Logger, errs *[]error, sdc *dpfm_api_input_reader.SDC) {
 	var err error = nil
 	defer wg.Done()
 	defer func() {
@@ -78,8 +80,8 @@ func (c *DPFMAPICaller) Plant(wg *sync.WaitGroup, mtx *sync.Mutex, errFin chan e
 	sessionID := sdc.RuntimeSessionID
 	ctx := context.Background()
 
-	plantData := sdc.Plant
-	res, err := c.rmq.SessionKeepRequest(ctx, c.conf.RMQ.QueueToSQL()[0], map[string]interface{}{"message": plantData, "function": "PlantPlant", "runtime_session_id": sessionID})
+	generalData := sdc.General
+	res, err := c.rmq.SessionKeepRequest(ctx, c.conf.RMQ.QueueToSQL()[0], map[string]interface{}{"message": generalData, "function": "PlantGeneral", "runtime_session_id": sessionID})
 	if err != nil {
 		err = xerrors.Errorf("rmq error: %w", err)
 		return
@@ -88,7 +90,34 @@ func (c *DPFMAPICaller) Plant(wg *sync.WaitGroup, mtx *sync.Mutex, errFin chan e
 	if !checkResult(res) {
 
 		sdc.SQLUpdateResult = getBoolPtr(false)
-		sdc.SQLUpdateError = "Plant Data cannot insert"
+		sdc.SQLUpdateError = "General Data cannot insert"
+		return
+	}
+
+	sdc.SQLUpdateResult = getBoolPtr(true)
+	return
+}
+
+func (c *DPFMAPICaller) StorageLocation(wg *sync.WaitGroup, mtx *sync.Mutex, errFin chan error, log *logger.Logger, errs *[]error, sdc *dpfm_api_input_reader.SDC) {
+	var err error = nil
+	defer wg.Done()
+	defer func() {
+		errFin <- err
+	}()
+	sessionID := sdc.RuntimeSessionID
+	ctx := context.Background()
+
+	storageLocationData := sdc.General.StorageLocation
+	res, err := c.rmq.SessionKeepRequest(ctx, c.conf.RMQ.QueueToSQL()[0], map[string]interface{}{"message": storageLocationData, "function": "PlantStorageLocation", "runtime_session_id": sessionID})
+	if err != nil {
+		err = xerrors.Errorf("rmq error: %w", err)
+		return
+	}
+	res.Success()
+	if !checkResult(res) {
+
+		sdc.SQLUpdateResult = getBoolPtr(false)
+		sdc.SQLUpdateError = "Storage Location Data cannot insert"
 		return
 	}
 

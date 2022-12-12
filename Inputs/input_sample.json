@@ -29,10 +29,26 @@
 		"Country": "",
 		"TimeZone": "",
 		"PlantIDByExtSystem": "",
-		"IsMarkedForDeletion": null
+		"IsMarkedForDeletion": null,
+		"StorageLocation": {
+			"StorageLocation": "",
+			"StorageLocationFullName": "",
+			"StorageLocationName": "",
+			"CreationDate": "",
+			"CreationTime": "",
+			"LastChangeDate": "",
+			"LastChangeTime": "",
+			"SearchTerm1": "",
+			"SearchTerm2": "",
+			"StorageLocationIsBlocked": null,
+			"GroupStorageLocationName1": "",
+			"GroupStorageLocationName2": "",
+			"StorageLocationIDByExtSystem": "",
+			"IsMarkedForDeletion": null
+		}
 	},
 	"api_schema": "DPFMPlantCreates",
-	"accepter": ["Plant"],
-	"order_id": null,
+	"accepter": ["General"],
+	"plant": null,
 	"deleted": false
 }
