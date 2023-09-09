@@ -5,50 +5,39 @@
 	"filepath": "/var/lib/aion/Data/rededge_sdc/abcdef.json",
 	"api_status_code": 200,
 	"runtime_session_id": "boi9ar543dg91ipdnspi099u231280ab0v8af0ew",
-	"business_partner": 201,
+	"business_partner": null,
 	"service_label": "PLANT",
+	"api_type": "creates",
 	"Plant": {
-		"BusinessPartner": 101,
-		"Plant": "SS99",
+		"BusinessPartner": null,
+		"Plant": "",
+		"PlantName": "",
 		"PlantFullName": "",
-		"PlantName": "ABC社",
-		"Language": "JA",
-		"CreationDate": "2022-10-20",
-		"CreationTime": "2022-10-20T12:10:16",
-		"LastChangeDate": "2022-11-20",
-		"LastChangeTime": "2022-11-20T14:11:15",
+		"Language": "",
 		"PlantFoundationDate": "",
 		"PlantLiquidationDate": "",
-		"SearchTerm1": "",
-		"SearchTerm2": "",
 		"PlantDeathDate": "",
-		"PlantIsBlocked": "",
-		"GroupPlantName1": "",
-		"GroupPlantName2": "",
 		"AddressID": null,
 		"Country": "",
 		"TimeZone": "",
 		"PlantIDByExtSystem": "",
+		"CreationDate": "",
+		"LastChangeDate": "",
 		"IsMarkedForDeletion": null,
-		"StorageLocation": {
-			"StorageLocation": "",
-			"StorageLocationFullName": "",
-			"StorageLocationName": "",
-			"CreationDate": "",
-			"CreationTime": "",
-			"LastChangeDate": "",
-			"LastChangeTime": "",
-			"SearchTerm1": "",
-			"SearchTerm2": "",
-			"StorageLocationIsBlocked": null,
-			"GroupStorageLocationName1": "",
-			"GroupStorageLocationName2": "",
-			"StorageLocationIDByExtSystem": "",
-			"IsMarkedForDeletion": null
-		}
+		"StorageLocation": [
+			{
+				"StorageLocation": "",
+				"StorageLocationName": "",
+				"StorageLocationFullName": "",
+				"StorageLocationIDByExtSystem": "",
+				"CreationDate": "",
+				"LastChangeDate": "",
+				"IsMarkedForDeletion": null
+			}
+		]
 	},
 	"api_schema": "DPFMPlantCreates",
-	"accepter": ["General"],
-	"plant": null,
-	"deleted": false
+	"accepter": [
+		"General"
+	]
 }
