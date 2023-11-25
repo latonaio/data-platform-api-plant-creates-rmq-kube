@@ -20,8 +20,8 @@ func (c *DPFMAPICaller) createSqlProcess(
 	errs *[]error,
 	log *logger.Logger,
 ) interface{} {
-	var general            *dpfm_api_output_formatter.General
-	var storageLocation    *[]dpfm_api_output_formatter.StorageLocation
+	var general *dpfm_api_output_formatter.General
+	var storageLocation *[]dpfm_api_output_formatter.StorageLocation
 	for _, fn := range accepter {
 		switch fn {
 		case "General":
@@ -34,8 +34,8 @@ func (c *DPFMAPICaller) createSqlProcess(
 	}
 
 	data := &dpfm_api_output_formatter.Message{
-		General:            general,
-		StorageLocation:    storageLocation,
+		General:         general,
+		StorageLocation: storageLocation,
 	}
 
 	return data
@@ -64,8 +64,8 @@ func (c *DPFMAPICaller) updateSqlProcess(
 	}
 
 	data := &dpfm_api_output_formatter.Message{
-		General:            general,
-		StorageLocation:    storageLocation,
+		General:         general,
+		StorageLocation: storageLocation,
 	}
 
 	return data
@@ -125,7 +125,7 @@ func (c *DPFMAPICaller) storageLocationCreateSql(
 		input.General.StorageLocation[i].Plant = input.General.Plant
 		storageLocationData := input.General.StorageLocation[i]
 
-		res, err := c.rmq.SessionKeepRequest(ctx, c.conf.RMQ.QueueToSQL()[0], map[string]interface{}{"message": accountingData, "function": "PlantStorageLocation", "runtime_session_id": sessionID})
+		res, err := c.rmq.SessionKeepRequest(ctx, c.conf.RMQ.QueueToSQL()[0], map[string]interface{}{"message": storageLocationData, "function": "PlantStorageLocation", "runtime_session_id": sessionID})
 		if err != nil {
 			err = xerrors.Errorf("rmq error: %w", err)
 			return nil
@@ -244,7 +244,7 @@ func generalIsUpdate(general *dpfm_api_processing_formatter.GeneralUpdates) bool
 func storageLocationIsUpdate(storageLocation *dpfm_api_processing_formatter.StorageLocationUpdates) bool {
 	businessPartner := storageLocation.BusinessPartner
 	plant := storageLocation.Plant
-	storageLocation := storageLocation.StorageLocation
+	//	storageLocation := storageLocation.StorageLocation
 
-	return !(businessPartner == 0 || plant == "" || storageLocation == "")
+	return !(businessPartner == 0 || plant == "") // storageLocation == "")
 }
